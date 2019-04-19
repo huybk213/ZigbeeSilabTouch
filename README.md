@@ -1,1 +1,1 @@
-Z3SwitchSoc_3
+Silab Zigbee
