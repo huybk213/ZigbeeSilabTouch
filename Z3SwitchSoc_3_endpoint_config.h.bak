@@ -8,7 +8,7 @@
 
 
 // Fixed number of defined endpoints
-#define FIXED_ENDPOINT_COUNT (3)
+#define FIXED_ENDPOINT_COUNT (2)
 
 
 
@@ -121,37 +121,37 @@ const EmberAfGenericClusterFunction emberAfFuncArrayOnOffClusterServer[] = { (Em
 #define ATTRIBUTE_SINGLETONS_SIZE (191)
 
 // Total size of attribute storage
-#define ATTRIBUTE_MAX_SIZE 56
+#define ATTRIBUTE_MAX_SIZE 36
 
 // Array of endpoints that are supported
-#define FIXED_ENDPOINT_ARRAY { 1, 2, 3 }
+#define FIXED_ENDPOINT_ARRAY { 1, 2 }
 
 // Array of profile ids
-#define FIXED_PROFILE_IDS { 260, 260, 260 }
+#define FIXED_PROFILE_IDS { 260, 260 }
 
 // Array of device ids
-#define FIXED_DEVICE_IDS { 2, 2064, 2 }
+#define FIXED_DEVICE_IDS { 2, 2064 }
 
 // Array of device versions
-#define FIXED_DEVICE_VERSIONS { 0, 0, 0 }
+#define FIXED_DEVICE_VERSIONS { 0, 0 }
 
 // Array of endpoint types supported on each endpoint
-#define FIXED_ENDPOINT_TYPES { 1, 0, 1 }
+#define FIXED_ENDPOINT_TYPES { 1, 0 }
 
 // Array of networks supported on each endpoint
-#define FIXED_NETWORKS { 0, 0, 0 }
+#define FIXED_NETWORKS { 0, 0 }
 
 
 // Code used to configure the cluster event mechanism
 #define EMBER_AF_GENERATED_EVENT_CODE \
   EmberEventControl emberAfIdentifyClusterServerTickCallbackControl1; \
   EmberEventControl emberAfIdentifyClusterServerTickCallbackControl2; \
-  EmberEventControl emberAfIdentifyClusterServerTickCallbackControl3; \
   extern EmberEventControl emberAfPluginFindAndBindInitiatorCheckTargetResponsesEventControl; \
   extern EmberEventControl emberAfPluginFormAndJoinCleanupEventControl; \
   extern EmberEventControl emberAfPluginInterpanFragmentReceiveEventControl; \
   extern EmberEventControl emberAfPluginInterpanFragmentTransmitEventControl; \
   extern EmberEventControl emberAfPluginNetworkSteeringFinishSteeringEventControl; \
+  extern EmberEventControl emberAfPluginReportingTickEventControl; \
   extern EmberEventControl emberAfPluginScanDispatchScanEventControl; \
   extern EmberEventControl emberAfPluginUpdateTcLinkKeyBeginTcLinkKeyUpdateEventControl; \
   extern EmberEventControl emberAfPluginZllCommissioningClientTouchLinkEventControl; \
@@ -160,6 +160,7 @@ const EmberAfGenericClusterFunction emberAfFuncArrayOnOffClusterServer[] = { (Em
   extern void emberAfPluginInterpanFragmentReceiveEventHandler(void); \
   extern void emberAfPluginInterpanFragmentTransmitEventHandler(void); \
   extern void emberAfPluginNetworkSteeringFinishSteeringEventHandler(void); \
+  extern void emberAfPluginReportingTickEventHandler(void); \
   extern void emberAfPluginScanDispatchScanEventHandler(void); \
   extern void emberAfPluginUpdateTcLinkKeyBeginTcLinkKeyUpdateEventHandler(void); \
   extern void emberAfPluginZllCommissioningClientTouchLinkEventHandler(void); \
@@ -178,19 +179,18 @@ const EmberAfGenericClusterFunction emberAfFuncArrayOnOffClusterServer[] = { (Em
   } \
   void emberAfIdentifyClusterServerTickCallbackWrapperFunction1(void) { clusterTickWrapper(&emberAfIdentifyClusterServerTickCallbackControl1, emberAfIdentifyClusterServerTickCallback, 1); } \
   void emberAfIdentifyClusterServerTickCallbackWrapperFunction2(void) { clusterTickWrapper(&emberAfIdentifyClusterServerTickCallbackControl2, emberAfIdentifyClusterServerTickCallback, 2); } \
-  void emberAfIdentifyClusterServerTickCallbackWrapperFunction3(void) { clusterTickWrapper(&emberAfIdentifyClusterServerTickCallbackControl3, emberAfIdentifyClusterServerTickCallback, 3); } \
 
 
 // EmberEventData structs used to populate the EmberEventData table
 #define EMBER_AF_GENERATED_EVENTS   \
   { &emberAfIdentifyClusterServerTickCallbackControl1, emberAfIdentifyClusterServerTickCallbackWrapperFunction1 }, \
   { &emberAfIdentifyClusterServerTickCallbackControl2, emberAfIdentifyClusterServerTickCallbackWrapperFunction2 }, \
-  { &emberAfIdentifyClusterServerTickCallbackControl3, emberAfIdentifyClusterServerTickCallbackWrapperFunction3 }, \
   { &emberAfPluginFindAndBindInitiatorCheckTargetResponsesEventControl, emberAfPluginFindAndBindInitiatorCheckTargetResponsesEventHandler }, \
   { &emberAfPluginFormAndJoinCleanupEventControl, emberAfPluginFormAndJoinCleanupEventHandler }, \
   { &emberAfPluginInterpanFragmentReceiveEventControl, emberAfPluginInterpanFragmentReceiveEventHandler }, \
   { &emberAfPluginInterpanFragmentTransmitEventControl, emberAfPluginInterpanFragmentTransmitEventHandler }, \
   { &emberAfPluginNetworkSteeringFinishSteeringEventControl, emberAfPluginNetworkSteeringFinishSteeringEventHandler }, \
+  { &emberAfPluginReportingTickEventControl, emberAfPluginReportingTickEventHandler }, \
   { &emberAfPluginScanDispatchScanEventControl, emberAfPluginScanDispatchScanEventHandler }, \
   { &emberAfPluginUpdateTcLinkKeyBeginTcLinkKeyUpdateEventControl, emberAfPluginUpdateTcLinkKeyBeginTcLinkKeyUpdateEventHandler }, \
   { &emberAfPluginZllCommissioningClientTouchLinkEventControl, emberAfPluginZllCommissioningClientTouchLinkEventHandler }, \
@@ -202,12 +202,12 @@ const EmberAfGenericClusterFunction emberAfFuncArrayOnOffClusterServer[] = { (Em
 #define EMBER_AF_GENERATED_EVENT_STRINGS   \
   "Identify Cluster Server EP 1",  \
   "Identify Cluster Server EP 2",  \
-  "Identify Cluster Server EP 3",  \
   "Find and Bind Initiator Plugin CheckTargetResponses",  \
   "Form and Join Library Plugin Cleanup",  \
   "Interpan Plugin FragmentReceive",  \
   "Interpan Plugin FragmentTransmit",  \
   "Network Steering Plugin FinishSteering",  \
+  "Reporting Plugin Tick",  \
   "Scan Dispatch Plugin Scan",  \
   "Update TC Link Key Plugin BeginTcLinkKeyUpdate",  \
   "ZLL Commissioning Client Plugin TouchLink",  \
@@ -217,12 +217,11 @@ const EmberAfGenericClusterFunction emberAfFuncArrayOnOffClusterServer[] = { (Em
 
 
 // The length of the event context table used to track and retrieve cluster events
-#define EMBER_AF_EVENT_CONTEXT_LENGTH 3
+#define EMBER_AF_EVENT_CONTEXT_LENGTH 2
 
 // EmberAfEventContext structs used to populate the EmberAfEventContext table
 #define EMBER_AF_GENERATED_EVENT_CONTEXT { 0x1, 0x3, false, EMBER_AF_LONG_POLL, EMBER_AF_OK_TO_SLEEP, &emberAfIdentifyClusterServerTickCallbackControl1}, \
-{ 0x2, 0x3, false, EMBER_AF_LONG_POLL, EMBER_AF_OK_TO_SLEEP, &emberAfIdentifyClusterServerTickCallbackControl2}, \
-{ 0x3, 0x3, false, EMBER_AF_LONG_POLL, EMBER_AF_OK_TO_SLEEP, &emberAfIdentifyClusterServerTickCallbackControl3}
+{ 0x2, 0x3, false, EMBER_AF_LONG_POLL, EMBER_AF_OK_TO_SLEEP, &emberAfIdentifyClusterServerTickCallbackControl2}
 
 
 #define EMBER_AF_GENERATED_PLUGIN_INIT_FUNCTION_DECLARATIONS \
@@ -231,6 +230,7 @@ const EmberAfGenericClusterFunction emberAfFuncArrayOnOffClusterServer[] = { (Em
   void emberAfPluginInterpanInitCallback(void); \
   void emberAfPluginIdleSleepInitCallback(void); \
   void emberAfPluginCountersInitCallback(void); \
+  void emberAfPluginReportingInitCallback(void); \
 
 
 #define EMBER_AF_GENERATED_PLUGIN_INIT_FUNCTION_CALLS \
@@ -239,6 +239,7 @@ const EmberAfGenericClusterFunction emberAfFuncArrayOnOffClusterServer[] = { (Em
   emberAfPluginInterpanInitCallback(); \
   emberAfPluginIdleSleepInitCallback(); \
   emberAfPluginCountersInitCallback(); \
+  emberAfPluginReportingInitCallback(); \
 
 
 #define EMBER_AF_GENERATED_PLUGIN_NCP_INIT_FUNCTION_DECLARATIONS \
@@ -254,11 +255,13 @@ const EmberAfGenericClusterFunction emberAfFuncArrayOnOffClusterServer[] = { (Em
 #define EMBER_AF_GENERATED_PLUGIN_STACK_STATUS_FUNCTION_DECLARATIONS \
   void emberAfPluginZllCommissioningCommonStackStatusCallback(EmberStatus status); \
   void emberAfPluginNetworkSteeringStackStatusCallback(EmberStatus status); \
+  void emberAfPluginReportingStackStatusCallback(EmberStatus status); \
 
 
 #define EMBER_AF_GENERATED_PLUGIN_STACK_STATUS_FUNCTION_CALLS \
   emberAfPluginZllCommissioningCommonStackStatusCallback(status); \
   emberAfPluginNetworkSteeringStackStatusCallback(status); \
+  emberAfPluginReportingStackStatusCallback(status); \
 
 
 // Generated data for the command discovery
@@ -333,7 +336,6 @@ const EmberAfGenericClusterFunction emberAfFuncArrayOnOffClusterServer[] = { (Em
 // Generated reporting configuration defaults
 #define EMBER_AF_GENERATED_REPORTING_CONFIG_DEFAULTS {\
   { EMBER_ZCL_REPORTING_DIRECTION_REPORTED, 1, 0x0006, 0x0000, CLUSTER_MASK_SERVER, 0x0000, 1, 65534, 0 }, \
-  { EMBER_ZCL_REPORTING_DIRECTION_REPORTED, 3, 0x0006, 0x0000, CLUSTER_MASK_SERVER, 0x0000, 1, 65534, 0 }, \
 }
-#define EMBER_AF_GENERATED_REPORTING_CONFIG_DEFAULTS_TABLE_SIZE (2)
+#define EMBER_AF_GENERATED_REPORTING_CONFIG_DEFAULTS_TABLE_SIZE (1)
 #endif // SILABS_AF_ENDPOINT_CONFIG

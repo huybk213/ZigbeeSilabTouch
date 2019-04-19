@@ -26404,6 +26404,42 @@ void emberAfPluginZllCommissioningClientTouchLinkFailedCallback(EmberAfZllCommis
 /** @} END ZLL Commissioning Client Plugin Callbacks */
 
 
+/** @name Groups Server Cluster Plugin Callbacks */
+// @{
+
+/** @brief Get Group Name
+ *
+ * This function returns the name of a group with the provided group ID, should
+ * it exist.
+ *
+ * @param endpoint Endpoint Ver.: always
+ * @param groupId Group ID Ver.: always
+ * @param groupName Group Name Ver.: always
+ */
+void emberAfPluginGroupsServerGetGroupNameCallback(uint8_t endpoint,
+                                                   uint16_t groupId,
+                                                   uint8_t *groupName);
+/** @brief Set Group Name
+ *
+ * This function sets the name of a group with the provided group ID.
+ *
+ * @param endpoint Endpoint Ver.: always
+ * @param groupId Group ID Ver.: always
+ * @param groupName Group Name Ver.: always
+ */
+void emberAfPluginGroupsServerSetGroupNameCallback(uint8_t endpoint,
+                                                   uint16_t groupId,
+                                                   uint8_t *groupName);
+/** @brief Group Names Supported
+ *
+ * This function returns whether or not group names are supported.
+ *
+ * @param endpoint Endpoint Ver.: always
+ */
+bool emberAfPluginGroupsServerGroupNamesSupportedCallback(uint8_t endpoint);
+/** @} END Groups Server Cluster Plugin Callbacks */
+
+
 /** @name Identify Cluster Plugin Callbacks */
 // @{
 
@@ -26432,6 +26468,20 @@ void emberAfPluginIdentifyStartFeedbackCallback(uint8_t endpoint,
  */
 void emberAfPluginIdentifyStopFeedbackCallback(uint8_t endpoint);
 /** @} END Identify Cluster Plugin Callbacks */
+
+
+/** @name On/Off Server Cluster Plugin Callbacks */
+// @{
+
+/** @brief On/off Cluster Server Post Init
+ *
+ * Following resolution of the On/Off state at startup for this endpoint, perform any
+ * additional initialization needed; e.g., synchronize hardware state.
+ *
+ * @param endpoint Endpoint that is being initialized  Ver.: always
+ */
+void emberAfPluginOnOffClusterServerPostInitCallback(uint8_t endpoint);
+/** @} END On/Off Server Cluster Plugin Callbacks */
 
 
 /** @name Update TC Link Key Plugin Callbacks */
@@ -26583,6 +26633,37 @@ void emberAfPluginInterpanFragmentTransmissionFailedCallback(uint8_t interpanFra
 /** @} END Interpan Plugin Callbacks */
 
 
+/** @name Find and Bind Initiator Plugin Callbacks */
+// @{
+
+/** @brief Bind Target
+ *
+ * This callback with enable the user to programmatically decide if they want
+ * to bind with a potential target. The plugin will try to bind with this
+ * target if and only if the function returns true. By default, the callback
+ * tells the plugin to try to bind with the target. If the binding type is
+ * changed to ::EMBER_MULTICAST_BINDING, a multicast binding will be created.
+ *
+ * @param nodeId short ID of the potential target Ver.: always
+ * @param bindingEntry The binding entry for that target. Ver.: always
+ * @param groupName The name of the group if a multicast binding is created.
+ * Ver.: always
+ */
+bool emberAfPluginFindAndBindInitiatorBindTargetCallback(EmberNodeId nodeId,
+                                                         EmberBindingTableEntry *bindingEntry,
+                                                         uint8_t *groupName);
+/** @brief Complete
+ *
+ * This callback is fired by the initiator when the Find and Bind process is
+ * complete.
+ *
+ * @param status Status code describing the completion of the find and bind
+ * process Ver.: always
+ */
+void emberAfPluginFindAndBindInitiatorCompleteCallback(EmberStatus status);
+/** @} END Find and Bind Initiator Plugin Callbacks */
+
+
 /** @name Idle/Sleep Plugin Callbacks */
 // @{
 
@@ -26686,35 +26767,37 @@ void emberAfPluginBasicResetToFactoryDefaultsCallback(uint8_t endpoint);
 /** @} END Basic Server Cluster Plugin Callbacks */
 
 
-/** @name Find and Bind Initiator Plugin Callbacks */
+/** @name Reporting Plugin Callbacks */
 // @{
 
-/** @brief Bind Target
+/** @brief Configured
  *
- * This callback with enable the user to programmatically decide if they want
- * to bind with a potential target. The plugin will try to bind with this
- * target if and only if the function returns true. By default, the callback
- * tells the plugin to try to bind with the target. If the binding type is
- * changed to ::EMBER_MULTICAST_BINDING, a multicast binding will be created.
+ * This callback is called by the Reporting plugin whenever a reporting entry
+ * is configured, including when entries are deleted or updated. The
+ * application can use this callback for scheduling readings or measurements
+ * based on the minimum and maximum reporting interval for the entry. The
+ * application should return EMBER_ZCL_STATUS_SUCCESS if it can support the
+ * configuration or an error status otherwise. Note: attribute reporting is
+ * required for many clusters and attributes, so rejecting a reporting
+ * configuration may violate ZigBee specifications.
  *
- * @param nodeId short ID of the potential target Ver.: always
- * @param bindingEntry The binding entry for that target. Ver.: always
- * @param groupName The name of the group if a multicast binding is created.
- * Ver.: always
+ * @param entry   Ver.: always
  */
-bool emberAfPluginFindAndBindInitiatorBindTargetCallback(EmberNodeId nodeId,
-                                                         EmberBindingTableEntry *bindingEntry,
-                                                         uint8_t *groupName);
-/** @brief Complete
+EmberAfStatus emberAfPluginReportingConfiguredCallback(const EmberAfPluginReportingEntry *entry);
+/** @brief Configured
  *
- * This callback is fired by the initiator when the Find and Bind process is
- * complete.
+ * This callback is called by the Reporting plugin to get the default reporting
+ * configuration values from user if there is no default value available within
+ * af generated default reporting configuration tabel. The application need to
+ * write to the minInterval, maxInterval and reportable change in the passed
+ * IO pointer in the arguement while handleing this callback, then application
+ * shall return true if it has provided the default values or else false for
+ * reporting plugin to further handleing.
  *
- * @param status Status code describing the completion of the find and bind
- * process Ver.: always
+ * @param entry   Ver.: always
  */
-void emberAfPluginFindAndBindInitiatorCompleteCallback(EmberStatus status);
-/** @} END Find and Bind Initiator Plugin Callbacks */
+bool emberAfPluginReportingGetDefaultReportingConfigCallback(EmberAfPluginReportingEntry *entry);
+/** @} END Reporting Plugin Callbacks */
 
 
 /** @} END addtogroup */

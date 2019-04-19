@@ -173,12 +173,27 @@ void emberAfBasicClusterServerAttributeChangedCallback(uint8_t endpoint,
 	emberAfCorePrintln("emberAfBasicClusterServerAttributeChangedCallback endpoint %d, attributeId %d\r\n", endpoint, attributeId);
 }
 
+// HuyTV
+
+static void vReportOnOffAttribute(uint8_t endpoint, bool is_on)
+{
+// The way 1
+	 uint8_t data[] = { LOW_BYTE(ZCL_ON_OFF_ATTRIBUTE_ID), HIGH_BYTE(ZCL_ON_OFF_ATTRIBUTE_ID), ZCL_BOOLEAN_ATTRIBUTE_TYPE, 0};
+	 data[3] = is_on;
+	 emberAfFillCommandGlobalServerToClientReportAttributes( ZCL_ON_OFF_CLUSTER_ID, data, sizeof(data) );
+	 emberAfSetCommandEndpoints (endpoint, 0);
+	 emberAfSendCommandUnicast(EMBER_OUTGOING_DIRECT, 0x0000);		// send to ZC
+
+	 emberAfCorePrintln("vReportOnOffAttribute endpoint %d, value %d\r\n", endpoint, is_on);
+}
 
 // HuyTV
 void emberAfOnOffClusterServerAttributeChangedCallback(uint8_t endpoint,
                                                        EmberAfAttributeId attributeId)
 {
 	emberAfCorePrintln("emberAfBasicClusterServerAttributeChangedCallback endpoint %d, attributeId %d\r\n", endpoint, attributeId);
+
+	vReportOnOffAttribute(endpoint, 1);
 }
 
 

@@ -72,14 +72,14 @@
   <includePath partCompatibility=".*efr32.*" languageCompatibility="c asm" uri="studio:/sdk/platform/Device/SiliconLabs/EFR32MG12P/Include"/>
   <includePath partCompatibility=".*ember.*" languageCompatibility="c asm" uri="studio:/sdk/platform/Device/SiliconLabs/efr32mg12p/Include"/>
   <includePath uri="studio:/sdk/platform/bootloader"/>
+  <includePath uri="studio:/sdk/platform/radio/rail_lib/plugin/coexistence/hal/efr32"/>
+  <includePath uri="studio:/sdk/platform/radio/rail_lib/plugin/coexistence/common"/>
+  <includePath uri="studio:/sdk/platform/radio/rail_lib/plugin/coexistence/protocol/ieee802154"/>
   <includePath uri="studio:/sdk/platform/radio/rail_lib/chip/efr32/efr32xg1x"/>
   <includePath uri="studio:/sdk/platform/radio/rail_lib/protocol/zwave"/>
   <includePath uri="studio:/sdk/platform/radio/rail_lib/protocol/ieee802154"/>
   <includePath uri="studio:/sdk/platform/radio/rail_lib/protocol/ble"/>
   <includePath uri="studio:/sdk/platform/radio/rail_lib/common"/>
-  <includePath uri="studio:/sdk/platform/radio/rail_lib/plugin/coexistence/hal/efr32"/>
-  <includePath uri="studio:/sdk/platform/radio/rail_lib/plugin/coexistence/common"/>
-  <includePath uri="studio:/sdk/platform/radio/rail_lib/plugin/coexistence/protocol/ieee802154"/>
   <macroDefinition languageCompatibility="c asm" name="APP_GECKO_INFO_PAGE_BTL" value="1"/>
   <macroDefinition languageCompatibility="c asm" name="ATTRIBUTE_STORAGE_CONFIGURATION" value="&quot;app/builder/Z3SwitchSoc_3/Z3SwitchSoc_3_endpoint_config.h&quot;"/>
   <macroDefinition languageCompatibility="c asm" name="CORTEXM3_EFR32MG12P332F1024GL125" value="1"/>

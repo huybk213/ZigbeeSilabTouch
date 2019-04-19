@@ -8,6 +8,10 @@
 
 // Token header for the token.properties.
 
+// Token header for the Scenes Server Cluster plugin.
+
+// Token header for the Reporting plugin.
+
 #ifdef CUSTOM_TOKEN_HEADER
   #include CUSTOM_TOKEN_HEADER
 #endif

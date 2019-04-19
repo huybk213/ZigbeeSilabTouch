@@ -276,14 +276,14 @@ CINC = -I./ \
 -I../../../hardware/kit/common/bsp \
   -I../../../platform/bootloader \
   -Ihal-config \
+  -I../../../platform/radio/rail_lib/plugin/coexistence/hal/efr32 \
+  -I../../../platform/radio/rail_lib/plugin/coexistence/common \
+  -I../../../platform/radio/rail_lib/plugin/coexistence/protocol/ieee802154 \
   -I../../../platform/radio/rail_lib/chip/efr32/efr32xg1x \
   -I../../../platform/radio/rail_lib/protocol/zwave \
   -I../../../platform/radio/rail_lib/protocol/ieee802154 \
   -I../../../platform/radio/rail_lib/protocol/ble \
   -I../../../platform/radio/rail_lib/common \
-  -I../../../platform/radio/rail_lib/plugin/coexistence/hal/efr32 \
-  -I../../../platform/radio/rail_lib/plugin/coexistence/common \
-  -I../../../platform/radio/rail_lib/plugin/coexistence/protocol/ieee802154 \
  \
 
 TARGET = Z3SwitchSoc_3

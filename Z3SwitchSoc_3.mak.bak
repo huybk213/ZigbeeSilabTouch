@@ -142,6 +142,9 @@ SOURCE_FILES = \
 ../../../protocol\zigbee\app\framework\plugin\network-steering\network-steering-cli.c \
 ../../../protocol\zigbee\app\framework\plugin\network-steering\network-steering-soc.c \
 ../../../protocol\zigbee\app\framework\plugin\on-off\on-off.c \
+../../../protocol\zigbee\app\framework\plugin\reporting\reporting.c \
+../../../protocol\zigbee\app\framework\plugin\reporting\reporting-cli.c \
+../../../protocol\zigbee\app\framework\plugin\reporting\reporting-default-configuration.c \
 ../../../protocol\zigbee\app\framework\plugin\scan-dispatch\scan-dispatch.c \
 ../../../protocol\zigbee\app\framework\plugin\scenes\scenes.c \
 ../../../protocol\zigbee\app\framework\plugin\scenes\scenes-cli.c \

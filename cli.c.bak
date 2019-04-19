@@ -25,11 +25,20 @@ void emAfCliWriteCommand(void);
 void emAfEepromDataPrintCommand(void);
 void emAfEepromInfoCommand(void);
 void emAfEepromStatusCommand(void);
+void emAfGroupsServerCliClear(void);
+void emAfGroupsServerCliPrint(void);
 void emAfInterpanDisableCommand(void);
 void emAfInterpanEnableCommand(void);
 void emAfInterpanFragmentTestCommand(void);
 void emAfInterpanSetMessageTimeoutCommand(void);
 void emAfPluginIdentifyCliPrint(void);
+void emAfPluginReportingCliAdd(void);
+void emAfPluginReportingCliClear(void);
+void emAfPluginReportingCliClearLastReportTime(void);
+void emAfPluginReportingCliPrint(void);
+void emAfPluginReportingCliRemove(void);
+void emAfPluginScenesServerClear(void);
+void emAfPluginScenesServerPrintInfo(void);
 void emberAfPluginCounterPrintCounterTypeCommand(void);
 void emberAfPluginCountersClear(void);
 void emberAfPluginCountersPrintCommand(void);
@@ -229,32 +238,6 @@ void zclGlobalReportCommand(void);
 void zclGlobalReportReadCommand(void);
 void zclGlobalSendMeAReportCommand(void);
 void zclGlobalWriteCommand(void);
-static void zclGroupsAddCommand(void) {
-  zclSimpleClientCommand( ZCL_GROUPS_CLUSTER_ID,
-                          ZCL_ADD_GROUP_COMMAND_ID);
-}
-
-static void zclGroupsAddIfIdCommand(void) {
-  zclSimpleClientCommand( ZCL_GROUPS_CLUSTER_ID,
-                          ZCL_ADD_GROUP_IF_IDENTIFYING_COMMAND_ID);
-}
-
-void zclGroupsGetCommand(void);
-static void zclGroupsRemoveCommand(void) {
-  zclSimpleClientCommand( ZCL_GROUPS_CLUSTER_ID,
-                          ZCL_REMOVE_GROUP_COMMAND_ID);
-}
-
-static void zclGroupsRmallCommand(void) {
-  zclSimpleClientCommand( ZCL_GROUPS_CLUSTER_ID,
-                          ZCL_REMOVE_ALL_GROUPS_COMMAND_ID);
-}
-
-static void zclGroupsViewCommand(void) {
-  zclSimpleClientCommand( ZCL_GROUPS_CLUSTER_ID,
-                          ZCL_VIEW_GROUP_COMMAND_ID);
-}
-
 static void zclIdentifyEzModeCommand(void) {
   zclSimpleClientCommand( ZCL_IDENTIFY_CLUSTER_ID,
                           ZCL_E_Z_MODE_INVOKE_COMMAND_ID);
@@ -908,55 +891,6 @@ static EmberCommandEntry emberCommandTableZclIdentifyCommands[] = {
 };
 
 #if defined(EMBER_COMMAND_INTEPRETER_HAS_DESCRIPTION_FIELD)
-static const char * const emberCommandTableZclGroupsAddCommandArguments[] = {
-  "group id",
-  "group name",
-  NULL
-};
-#endif
-
-#if defined(EMBER_COMMAND_INTEPRETER_HAS_DESCRIPTION_FIELD)
-static const char * const emberCommandTableZclGroupsAddIfIdCommandArguments[] = {
-  "group id",
-  "group name",
-  NULL
-};
-#endif
-
-#if defined(EMBER_COMMAND_INTEPRETER_HAS_DESCRIPTION_FIELD)
-static const char * const emberCommandTableZclGroupsGetCommandArguments[] = {
-  "group count",
-  "group list",
-  "",
-  NULL
-};
-#endif
-
-#if defined(EMBER_COMMAND_INTEPRETER_HAS_DESCRIPTION_FIELD)
-static const char * const emberCommandTableZclGroupsRemoveCommandArguments[] = {
-  "group id",
-  NULL
-};
-#endif
-
-#if defined(EMBER_COMMAND_INTEPRETER_HAS_DESCRIPTION_FIELD)
-static const char * const emberCommandTableZclGroupsViewCommandArguments[] = {
-  "group id",
-  NULL
-};
-#endif
-
-static EmberCommandEntry emberCommandTableZclGroupsCommands[] = {
-  emberCommandEntryActionWithDetails("add", zclGroupsAddCommand, "vb", "Command description for AddGroup", emberCommandTableZclGroupsAddCommandArguments),
-  emberCommandEntryActionWithDetails("add-if-id", zclGroupsAddIfIdCommand, "vb", "Command description for AddGroupIfIdentifying", emberCommandTableZclGroupsAddIfIdCommandArguments),
-  emberCommandEntryActionWithDetails("get", zclGroupsGetCommand, "uv*", "Command description for GetGroupMembership", emberCommandTableZclGroupsGetCommandArguments),
-  emberCommandEntryActionWithDetails("remove", zclGroupsRemoveCommand, "v", "Command description for RemoveGroup", emberCommandTableZclGroupsRemoveCommandArguments),
-  emberCommandEntryActionWithDetails("rmall", zclGroupsRmallCommand, "", "Command description for RemoveAllGroups", NULL),
-  emberCommandEntryActionWithDetails("view", zclGroupsViewCommand, "v", "Command description for ViewGroup", emberCommandTableZclGroupsViewCommandArguments),
-  emberCommandEntryTerminator()
-};
-
-#if defined(EMBER_COMMAND_INTEPRETER_HAS_DESCRIPTION_FIELD)
 static const char * const emberCommandTableZclGlobalDirectionCommandArguments[] = {
   "The direction for global commands, 0 = client to server, 1 = server to ...",
   NULL
@@ -1348,7 +1282,6 @@ static EmberCommandEntry emberCommandTableZclCommands[] = {
   emberCommandEntrySubMenu("basic", emberCommandTableZclBasicCommands, ""),
   emberCommandEntrySubMenu("color-control", emberCommandTableZclColorControlCommands, ""),
   emberCommandEntrySubMenu("global", emberCommandTableZclGlobalCommands, ""),
-  emberCommandEntrySubMenu("groups", emberCommandTableZclGroupsCommands, ""),
   emberCommandEntrySubMenu("identify", emberCommandTableZclIdentifyCommands, ""),
   emberCommandEntrySubMenu("level-control", emberCommandTableZclLevelControlCommands, ""),
   emberCommandEntryActionWithDetails("mfg-code", zclMfgCodeCommand, "v", "Sets the two byte manufacturer specific identifier to use for the next ...", emberCommandTableZclMfgCodeCommandArguments),
@@ -1514,6 +1447,41 @@ static EmberCommandEntry emberCommandTablePluginUpdateTcLinkKeyCommands[] = {
   emberCommandEntryTerminator()
 };
 
+static EmberCommandEntry emberCommandTablePluginScenesCommands[] = {
+  emberCommandEntryActionWithDetails("clear", emAfPluginScenesServerClear, "", "Clear the scenes table on every endpoint.", NULL),
+  emberCommandEntryActionWithDetails("print", emAfPluginScenesServerPrintInfo, "", "Print information about the contents of the scenes table.", NULL),
+  emberCommandEntryTerminator()
+};
+
+#if defined(EMBER_COMMAND_INTEPRETER_HAS_DESCRIPTION_FIELD)
+static const char * const emberCommandTablePluginReportingAddCommandArguments[] = {
+  "The local endpoint from which the attribute is reported.",
+  "The cluster where the attribute is located.",
+  "The id of the attribute being reported.",
+  "0 for client-side attributes or 1 for server-side attributes.",
+  "The minimum reporting interval, measured in seconds.",
+  "The maximum reporting interval, measured in seconds.",
+  "The minimum change to the attribute that will result in a report being ...",
+  NULL
+};
+#endif
+
+#if defined(EMBER_COMMAND_INTEPRETER_HAS_DESCRIPTION_FIELD)
+static const char * const emberCommandTablePluginReportingRemoveCommandArguments[] = {
+  "The index of the report to be removed.",
+  NULL
+};
+#endif
+
+static EmberCommandEntry emberCommandTablePluginReportingCommands[] = {
+  emberCommandEntryActionWithDetails("add", emAfPluginReportingCliAdd, "uvvuvvw", "Add a new entry to the report table.", emberCommandTablePluginReportingAddCommandArguments),
+  emberCommandEntryActionWithDetails("clear", emAfPluginReportingCliClear, "", "Clear all entries from the report table.", NULL),
+  emberCommandEntryActionWithDetails("clear-last-report-time", emAfPluginReportingCliClearLastReportTime, "", "Clear last report time of attributes.", NULL),
+  emberCommandEntryActionWithDetails("print", emAfPluginReportingCliPrint, "", "Print the report table.", NULL),
+  emberCommandEntryActionWithDetails("remove", emAfPluginReportingCliRemove, "u", "Remove an entry from the report table.", emberCommandTablePluginReportingRemoveCommandArguments),
+  emberCommandEntryTerminator()
+};
+
 #if defined(EMBER_COMMAND_INTEPRETER_HAS_DESCRIPTION_FIELD)
 static const char * const emberCommandTablePluginNetworkSteeringMaskAddCommandArguments[] = {
   "The channel mask to add a channel to.",
@@ -1611,6 +1579,12 @@ static EmberCommandEntry emberCommandTablePluginIdentifyCommands[] = {
   emberCommandEntryTerminator()
 };
 
+static EmberCommandEntry emberCommandTablePluginGroupsServerCommands[] = {
+  emberCommandEntryActionWithDetails("clear", emAfGroupsServerCliClear, "", "Clear the groups table on every endpoint.", NULL),
+  emberCommandEntryActionWithDetails("print", emAfGroupsServerCliPrint, "", "Print information about the contents of the groups table.", NULL),
+  emberCommandEntryTerminator()
+};
+
 #if defined(EMBER_COMMAND_INTEPRETER_HAS_DESCRIPTION_FIELD)
 static const char * const emberCommandTablePluginFindAndBindInitiatorCommandArguments[] = {
   "The endpoint on which to begin the Finding and Binding initiator proce ...",
@@ -1673,10 +1647,13 @@ static EmberCommandEntry emberCommandTablePluginCommands[] = {
   emberCommandEntrySubMenu("counters", emberCommandTablePluginCountersCommands, ""),
   emberCommandEntrySubMenu("eeprom", emberCommandTablePluginEepromCommands, ""),
   emberCommandEntrySubMenu("find-and-bind", emberCommandTablePluginFindAndBindCommands, ""),
+  emberCommandEntrySubMenu("groups-server", emberCommandTablePluginGroupsServerCommands, ""),
   emberCommandEntrySubMenu("identify", emberCommandTablePluginIdentifyCommands, ""),
   emberCommandEntrySubMenu("idle-sleep", emberCommandTablePluginIdleSleepCommands, ""),
   emberCommandEntrySubMenu("interpan", emberCommandTablePluginInterpanCommands, ""),
   emberCommandEntrySubMenu("network-steering", emberCommandTablePluginNetworkSteeringCommands, ""),
+  emberCommandEntrySubMenu("reporting", emberCommandTablePluginReportingCommands, ""),
+  emberCommandEntrySubMenu("scenes", emberCommandTablePluginScenesCommands, ""),
   emberCommandEntrySubMenu("update-tc-link-key", emberCommandTablePluginUpdateTcLinkKeyCommands, ""),
   emberCommandEntrySubMenu("zll-commissioning", emberCommandTablePluginZllCommissioningCommands, ""),
   emberCommandEntryTerminator()

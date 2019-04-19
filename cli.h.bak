@@ -854,17 +854,6 @@
 
 /** @} */ // end group color-control
 
-/** @addtogroup groups Cluster Commands: Groups
- * @ingroup cli
- * This group describes the CLI commands for the Groups cluster. Listed below is
- * a description of the cluster:<br><br><i> Attributes and commands for group
- * configuration and manipulation.</i>
- * 
- * @{
- */
-
-/** @} */ // end group groups
-
 /** @addtogroup identify Cluster Commands: Identify
  * @ingroup cli
  * This group describes the CLI commands for the Identify cluster. Listed below
@@ -1018,6 +1007,26 @@
 
 /** @} */ // end group plugin-find-and-bind-initiator
 
+/** @addtogroup plugin-groups-server Plugin Commands: Groups Server
+ * @ingroup cli
+ * The groups server plugin contributes a CLI command to the application
+ * framework to be used for printing information related to groups.
+ * 
+ * @{
+ */
+
+/** @brief <b>plugin groups-server clear </b>
+ *   - <i>Clear the groups table on every endpoint.</i>
+ */
+#define EMBER_AF_DOXYGEN_CLI_COMMAND_PLUGIN_GROUPS_SERVER_PLUGIN_GROUPS_SERVER_CLEAR
+
+/** @brief <b>plugin groups-server print </b>
+ *   - <i>Print information about the contents of the groups table.</i>
+ */
+#define EMBER_AF_DOXYGEN_CLI_COMMAND_PLUGIN_GROUPS_SERVER_PLUGIN_GROUPS_SERVER_PRINT
+
+/** @} */ // end group plugin-groups-server
+
 /** @addtogroup plugin-identify Plugin Commands: Identify
  * @ingroup cli
  * The identify plugin contributes a CLI command to the application framework to
@@ -1142,6 +1151,70 @@
 #define EMBER_AF_DOXYGEN_CLI_COMMAND_PLUGIN_NETWORK_STEERING_PLUGIN_NETWORK_STEERING_STOP
 
 /** @} */ // end group plugin-network-steering
+
+/** @addtogroup plugin-reporting Plugin Commands: Reporting
+ * @ingroup cli
+ * The reporting plugin contributes several CLI commands to the application
+ * framework to be used in creating and managing reporting table entries
+ * directly on the device.
+ * 
+ * @{
+ */
+
+/** @brief <b>plugin reporting add [endpoint:1] [clusterId:2] [attributeId:2] [mask:1] [minInterval:2] [maxInterval:2] [reportableChange:4] </b>
+ *   - <i>Add a new entry to the report table.</i>
+ *     - endpoint - INT8U - The local endpoint from which the attribute is reported.
+ *     - clusterId - INT16U - The cluster where the attribute is located.
+ *     - attributeId - INT16U - The id of the attribute being reported.
+ *     - mask - INT8U - 0 for client-side attributes or 1 for server-side attributes.
+ *     - minInterval - INT16U - The minimum reporting interval, measured in seconds.
+ *     - maxInterval - INT16U - The maximum reporting interval, measured in seconds.
+ *     - reportableChange - INT32U - The minimum change to the attribute that will result in a report being sent.
+ */
+#define EMBER_AF_DOXYGEN_CLI_COMMAND_PLUGIN_REPORTING_PLUGIN_REPORTING_ADD
+
+/** @brief <b>plugin reporting clear </b>
+ *   - <i>Clear all entries from the report table.</i>
+ */
+#define EMBER_AF_DOXYGEN_CLI_COMMAND_PLUGIN_REPORTING_PLUGIN_REPORTING_CLEAR
+
+/** @brief <b>plugin reporting clear-last-report-time </b>
+ *   - <i>Clear last report time of attributes.</i>
+ */
+#define EMBER_AF_DOXYGEN_CLI_COMMAND_PLUGIN_REPORTING_PLUGIN_REPORTING_CLEAR_LAST_REPORT_TIME
+
+/** @brief <b>plugin reporting print </b>
+ *   - <i>Print the report table.</i>
+ */
+#define EMBER_AF_DOXYGEN_CLI_COMMAND_PLUGIN_REPORTING_PLUGIN_REPORTING_PRINT
+
+/** @brief <b>plugin reporting remove [index:1] </b>
+ *   - <i>Remove an entry from the report table.</i>
+ *     - index - INT8U - The index of the report to be removed.
+ */
+#define EMBER_AF_DOXYGEN_CLI_COMMAND_PLUGIN_REPORTING_PLUGIN_REPORTING_REMOVE
+
+/** @} */ // end group plugin-reporting
+
+/** @addtogroup plugin-scenes Plugin Commands: Scenes Server
+ * @ingroup cli
+ * The Scenes server plugin contributes a CLI command to the application
+ * framework to be used for printing information related to scenes.
+ * 
+ * @{
+ */
+
+/** @brief <b>plugin scenes clear </b>
+ *   - <i>Clear the scenes table on every endpoint.</i>
+ */
+#define EMBER_AF_DOXYGEN_CLI_COMMAND_PLUGIN_SCENES_PLUGIN_SCENES_CLEAR
+
+/** @brief <b>plugin scenes print </b>
+ *   - <i>Print information about the contents of the scenes table.</i>
+ */
+#define EMBER_AF_DOXYGEN_CLI_COMMAND_PLUGIN_SCENES_PLUGIN_SCENES_PRINT
+
+/** @} */ // end group plugin-scenes
 
 /** @addtogroup plugin-update-tc-link-key Plugin Commands: Update TC Link Key
  * @ingroup cli
@@ -1470,55 +1543,6 @@
 
 /** @} */ // end group color-control
 
-/** @addtogroup groups Cluster Commands: Groups
- * @ingroup cli
- * This group describes the CLI commands for the Groups cluster. Listed below is
- * a description of the cluster:<br><br><i> Attributes and commands for group
- * configuration and manipulation.</i>
- * 
- * @{
- */
-
-/** @brief <b>zcl groups add [groupId:2] [groupName:-1] </b>
- *   - <i>Command description for AddGroup</i>
- *     - groupId - INT16U
- *     - groupName - CHAR_STRING
- */
-#define EMBER_AF_DOXYGEN_CLI_COMMAND_GROUPS_ADD
-
-/** @brief <b>zcl groups view [groupId:2] </b>
- *   - <i>Command description for ViewGroup</i>
- *     - groupId - INT16U
- */
-#define EMBER_AF_DOXYGEN_CLI_COMMAND_GROUPS_VIEW
-
-/** @brief <b>zcl groups get [groupCount:1] [groupList:2] </b>
- *   - <i>Command description for GetGroupMembership</i>
- *     - groupCount - INT8U
- *     - groupList - INT16U
- */
-#define EMBER_AF_DOXYGEN_CLI_COMMAND_GROUPS_GET
-
-/** @brief <b>zcl groups remove [groupId:2] </b>
- *   - <i>Command description for RemoveGroup</i>
- *     - groupId - INT16U
- */
-#define EMBER_AF_DOXYGEN_CLI_COMMAND_GROUPS_REMOVE
-
-/** @brief <b>zcl groups rmall </b>
- *   - <i>Command description for RemoveAllGroups</i>
- */
-#define EMBER_AF_DOXYGEN_CLI_COMMAND_GROUPS_RMALL
-
-/** @brief <b>zcl groups add-if-id [groupId:2] [groupName:-1] </b>
- *   - <i>Command description for AddGroupIfIdentifying</i>
- *     - groupId - INT16U
- *     - groupName - CHAR_STRING
- */
-#define EMBER_AF_DOXYGEN_CLI_COMMAND_GROUPS_ADD_IF_ID
-
-/** @} */ // end group groups
-
 /** @addtogroup identify Cluster Commands: Identify
  * @ingroup cli
  * This group describes the CLI commands for the Identify cluster. Listed below
@@ -1805,6 +1829,16 @@
 
 /** @} */ // end group plugin-find-and-bind-initiator
 
+/** @addtogroup plugin-groups-server Plugin Commands: Groups Server
+ * @ingroup cli
+ * The groups server plugin contributes a CLI command to the application
+ * framework to be used for printing information related to groups.
+ * 
+ * @{
+ */
+
+/** @} */ // end group plugin-groups-server
+
 /** @addtogroup plugin-identify Plugin Commands: Identify
  * @ingroup cli
  * The identify plugin contributes a CLI command to the application framework to
@@ -1845,6 +1879,27 @@
  */
 
 /** @} */ // end group plugin-network-steering
+
+/** @addtogroup plugin-reporting Plugin Commands: Reporting
+ * @ingroup cli
+ * The reporting plugin contributes several CLI commands to the application
+ * framework to be used in creating and managing reporting table entries
+ * directly on the device.
+ * 
+ * @{
+ */
+
+/** @} */ // end group plugin-reporting
+
+/** @addtogroup plugin-scenes Plugin Commands: Scenes Server
+ * @ingroup cli
+ * The Scenes server plugin contributes a CLI command to the application
+ * framework to be used for printing information related to scenes.
+ * 
+ * @{
+ */
+
+/** @} */ // end group plugin-scenes
 
 /** @addtogroup plugin-update-tc-link-key Plugin Commands: Update TC Link Key
  * @ingroup cli
